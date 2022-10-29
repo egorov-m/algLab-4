@@ -28,13 +28,13 @@
         }
 
         /// <summary> Логировать из буфера </summary>
-        public void LogBuffer()
+        private void LogBuffer()
         {
-            foreach (var message in _handlers)
+            foreach (var handler in _handlers)
             {
                 foreach (var item in _buffer)
                 {
-                    message.Log(item);
+                    handler.Log(item);
                 }
             }
             _buffer.Clear();

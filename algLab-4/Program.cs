@@ -1,4 +1,4 @@
-﻿using algLab_4.Logger;
+﻿using algLab_4.Task1;
 
 namespace algLab_4
 {
@@ -6,15 +6,8 @@ namespace algLab_4
     {
         static void Main(string[] args)
         {
-            var handlers = new List<IMessageHandler>() { new ConsoleHandler(), new FileHandler() };
-            var logger = Logger.Logger.GetLogger("logger", Level.INFO, handlers);
-            
-
-            for (var i = 0; i < 10; i++)
-            {
-                logger.Info($"Index: {i}.");
-                Thread.Sleep(2000);
-            }
+            var array = new [] { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+            array.InsertionSort();
         }
     }
 }
