@@ -6,7 +6,7 @@ namespace algLab_4
     {
         static void Main(string[] args)
         {
-            var array = new [] { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+            var array = new [] { 15, 11, 10, 9, 1 };
             array.InsertionSort();
         }
     }
