@@ -5,10 +5,20 @@ namespace algLab_4.Task1
     public static class Extensions
     {
         /// <summary> Логгер для ведения журнала операций производимых во время сортировки </summary>
-        private static readonly Logger.Logger SortLogger = Logger.Logger.GetLogger(
+        private static Logger.Logger SortLogger = Logger.Logger.GetLogger(
             "sortLogger", 
             Level.INFO, 
             new List<IMessageHandler>() { new DelayHandler(1000, new List<IMessageHandler>() { new ConsoleHandler(), new FileHandler()})});
+
+        /// <summary> Установить логгер по имени</summary>
+        /// <param name="name"></param>
+        public static void SetLogger(string name)
+        {
+            SortLogger = Logger.Logger.GetLogger(name);
+        }
+
+        /// <summary> Получить текущий логгер </summary>
+        public static Logger.Logger GetCurrentLogger() => SortLogger;
 
         /// <summary> Сортировка вставками, ведётся журнал производимых операций </summary>
         /// <typeparam name="T"> Тип данных элементов коллекции </typeparam>
@@ -46,14 +56,12 @@ namespace algLab_4.Task1
         /// <summary> Быстрая сортировка, ведётся журнал производимых операций </summary>
         /// <typeparam name="T"> Тип данных элементов коллекции </typeparam>
         /// <param name="collection"> Коллекция для сортировки </param>
-        /// <param name="left"> Индекс начала коллекции </param>
-        /// <param name="right"> Индекс конца коллекции </param>
-        public static void QuickSortHoare<T>(this IList<T> collection, int left, int right) where T : IComparable
+        public static void QuickSortHoare<T>(this IList<T> collection) where T : IComparable
         {
             SortLogger.Info($"Начинается сортировка (Метод: Quick Sort) массива длинной: {collection.Count}.");
             SortLogger.Info($"Исходный массив: {collection.GetArrayForLog()}");
 
-            collection.InsideQuickSortHoare(left, right);
+            collection.InsideQuickSortHoare(0, collection.Count - 1);
 
             SortLogger.Info("Массив отсортирован!");
             SortLogger.Info($"Результат: {collection.GetArrayForLog()}");

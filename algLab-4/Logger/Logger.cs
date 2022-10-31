@@ -3,7 +3,7 @@
     public class Logger
     {
         /// <summary> Обработчики логирования </summary>
-        private readonly List<IMessageHandler> _handlers = new();
+        private List<IMessageHandler> _handlers = new();
         /// <summary> Существующие логгеры </summary>
         private static readonly Dictionary<string, Logger> _loggers = new();
 
@@ -46,6 +46,13 @@
             Level = level;
             _loggers.Add(name, this);
         }
+
+        /// <summary> Очистить логгер от обработчиков </summary>
+        public void ClearHandlers() => _handlers = new List<IMessageHandler>();
+
+        /// <summary> Добавить обработчик для логгера</summary>
+        /// <param name="handler"> Новый обработчик </param>
+        public void AddHandler(IMessageHandler handler) => _handlers.Add(handler);
 
         /// <summary> Получить логгер по имени </summary>
         /// <param name="name"> Имя логгера </param>

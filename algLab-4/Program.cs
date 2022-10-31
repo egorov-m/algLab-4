@@ -1,4 +1,4 @@
-﻿using algLab_4.Task1;
+﻿using algLab_4.ConsoleMenu;
 
 namespace algLab_4
 {
@@ -6,9 +6,7 @@ namespace algLab_4
     {
         static void Main(string[] args)
         {
-            var array = new [] { 15, 11, 10, 9, 1 };
-            //array.InsertionSort();
-            array.QuickSortHoare(0, array.Length - 1);
+            MenuRenderer.PrimaryMenuRendering();
         }
     }
 }
