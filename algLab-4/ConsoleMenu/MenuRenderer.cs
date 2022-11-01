@@ -7,7 +7,7 @@ namespace algLab_4.ConsoleMenu
     {
         /// <summary> Нарисовать меню </summary>
         /// <param name="menuItems"> Элемент меню </param>
-        public static void DrawMenu(IList<MenuItem> menuItems)
+        public static void DrawMenu(IList<IMenuItem> menuItems)
         {
             foreach (var menuItem in menuItems)
             {

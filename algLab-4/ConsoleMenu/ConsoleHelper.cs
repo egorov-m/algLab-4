@@ -5,10 +5,10 @@
         /// <summary> Очистка экрана </summary>
         public static void ClearScreen() 
         {
-            for (int i = 0; i < Console.WindowHeight; i++)
+            for (var i = 0; i < Console.WindowHeight; i++)
             {
                 Console.SetCursorPosition(0, i);
-                int width = Console.WindowWidth;
+                var width = Console.WindowWidth;
                 string str = new(' ', width);
                 Console.SetCursorPosition(0, i);
                 Console.Write(str);

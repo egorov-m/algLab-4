@@ -6,7 +6,7 @@
         /// <summary> Движение по меню </summary>
         /// <param name="menuItems"> Элементы меню </param>
         /// <param name="title"> Заголовок меню </param>
-        public static MenuItem? RunSelectingMenu(this IList<MenuItem> menuItems, string title = null)
+        public static IMenuItem? RunSelectingMenu(this IList<IMenuItem> menuItems, string title = null)
         {
             var exit = false;
             do
@@ -40,7 +40,7 @@
 
         /// <summary> Выбор следующего элемента меню </summary>
         /// <param name="menuItems"> Элементы меню </param>
-        private static void SelectNextItem(this IList<MenuItem> menuItems)
+        private static void SelectNextItem(this IList<IMenuItem> menuItems)
         {
             for (var i = 0; i < menuItems.Count; i++)
             {
@@ -56,7 +56,7 @@
 
         /// <summary> Выбор предыдущего элемента меню </summary>
         /// <param name="menuItems"> Элементы меню </param>
-        private static void SelectPrevItem(this IList<MenuItem> menuItems) 
+        private static void SelectPrevItem(this IList<IMenuItem> menuItems) 
         {
             for (var i = 0; i < menuItems.Count; i++)
             {
@@ -72,7 +72,7 @@
 
         /// <summary> Получить текущий элемент меню </summary>
         /// <param name="menuItems"> Элементы меню </param>
-        private static MenuItem? GetCurrentItem(this IList<MenuItem> menuItems)
+        private static IMenuItem? GetCurrentItem(this IList<IMenuItem> menuItems)
         {
             return menuItems.FirstOrDefault(menuItem => menuItem.IsSelected);
         }
