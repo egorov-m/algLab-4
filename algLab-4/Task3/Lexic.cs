@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace algLab_4.Task3
 {
@@ -21,7 +22,10 @@ namespace algLab_4.Task3
                 // декодируем байты в строку
                 string textFromFile = Encoding.Default.GetString(buffer);
 
-                string[] separateWord = textFromFile.Split(' ', ',', '!', '.', '"', ':', '-', ';', '?');
+                var punctuation = textFromFile.Where(Char.IsPunctuation).Distinct().ToArray();
+                var separateWord = textFromFile.Split().Select(x => x.Trim(punctuation));
+
+                //string[] separateWord = textFromFile.Split(' ', ',', '!', '.', '"', ':', '-', ';', '?');
                 foreach (var i in separateWord)
                 {
                     words.Add(i);
