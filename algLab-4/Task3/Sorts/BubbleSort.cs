@@ -8,11 +8,11 @@ namespace algLab_4.Task3.Sorts
 {
     class BubbleSort
     {
-        public static void BubbleSorting(string[] arrForSorting)
+        public static void BubbleSorting(IList<string> arrForSorting)
         {
-            for (int i = 0; i < arrForSorting.Length; i++)
+            for (int i = 0; i < arrForSorting.Count; i++)
             {
-                for (int j = 0; j < arrForSorting.Length - 1; j++)
+                for (int j = 0; j < arrForSorting.Count - 1; j++)
                 {
                     if (arrForSorting[j].CompareTo(arrForSorting[j + 1]) > 0)
                     {
@@ -22,10 +22,6 @@ namespace algLab_4.Task3.Sorts
                     }
                 }
             }
-
-
-            for (int i = 0; i < arrForSorting.Length; i++)
-                Console.WriteLine(arrForSorting[i]);
         }
     }
 }

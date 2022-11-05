@@ -25,7 +25,6 @@ namespace algLab_4.Task3
                 var punctuation = textFromFile.Where(Char.IsPunctuation).Distinct().ToArray();
                 var separateWord = textFromFile.Split().Select(x => x.Trim(punctuation));
 
-                //string[] separateWord = textFromFile.Split(' ', ',', '!', '.', '"', ':', '-', ';', '?');
                 foreach (var i in separateWord)
                 {
                     words.Add(i);
@@ -44,10 +43,10 @@ namespace algLab_4.Task3
             foreach (var i in words)
                 Console.WriteLine(i);
 
-            Console.WriteLine("--------------------------------");
+            //Sorts.BubbleSort.BubbleSorting(words);
+            Sorts.QuickSort.QuickSorting(words, 0, words.Count - 1);
 
-            //Sorts.BubbleSort.BubbleSorting(words.ToArray());
-            Sorts.QuickSort.QuickSorting(words.ToArray(), 0, words.ToArray().Length - 1);
+            CountingRepeatWords.CountWords(words);
 
         }
     }

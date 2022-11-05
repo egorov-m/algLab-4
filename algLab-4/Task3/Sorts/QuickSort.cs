@@ -8,14 +8,14 @@ namespace algLab_4.Task3.Sorts
 {
      class QuickSort
     {
-        static void Swap(string[] array, int i, int j)
+        static void Swap(IList<string> array, int i, int j)
         {
             string temp = array[i];
             array[i] = array[j];
             array[j] = temp;
         }
 
-        public static void QuickSorting(string[] array, int start, int end)
+        public static void QuickSorting(IList<string> array, int start, int end)
         {
             int i = start;
             int k = end;
@@ -36,15 +36,6 @@ namespace algLab_4.Task3.Sorts
                 QuickSorting(array, start, k - 1);
                 QuickSorting(array, k + 1, end);
             }
-
-            Print(array);
-        }
-
-
-        static void Print(string[] arraySort)
-        {
-            foreach (var i in arraySort)
-                Console.WriteLine(i);
         }
     }
 }
