@@ -1,225 +1,202 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace algLab_4.Task3.Sorts
 {
-    class BurstSortOutput
+    public static class BurstSort
     {
-        public static void Output(IList<string> array)
+        /// <summary> Лимит количества элементов для корзины, куда помещаются элементы </summary>
+        private const int Threshold = 32;
+        /// <summary> Размер поддерживаемого алфавита </summary>
+        private const int Alphbet = 127;
+        /// <summary> Начальный размер корзины </summary>
+        private const int BucketStartSize = 4;
+        /// <summary> Коэффициент роста размера корзины </summary>
+        private const int BucketGrowthFactor = 4;
+
+        private static Trie? _root;// Starting point of BurstTrie 
+
+        /// <summary> Сортировать коллекцию строк алгоритмом "BurstSort" </summary>
+        /// <param name="collection"> Коллекция для сортировки </param>
+        public static void BurstSorting(this IList<string> collection)
         {
-            BurstSort b = new BurstSort();
-
-            b.insert(array);
-            b.print();
-        }
-    }
-
-
-    class BurstSort
-    {
-        static int threshold = 1000;
-        static int alphbet = 20000;
-        static int bucket_start_size = 40;
-        static int bucket_growth_factor = 40;
-
-
-        Trie root;// Starting point of BurstTrie 
-
-        public BurstSort()
-        {
-            root = null;
+            collection.Insert();
+            WritingToOriginalCollection(collection);
         }
 
-
-        /*
-         *                 "Insertion phase"
-         * Inserting string prefix in trie and suffixes in buckets
-         */
-        public void insert(IList<string> s)
+        /// <summary>
+        /// Фаза вставки:
+        /// Вставка префикса строки в дерево и суффиксов в корзину
+        /// </summary>
+        /// <param name="s"> Коллекция строк </param>
+        private static void Insert(this IList<string> s)
         {
-            foreach (string i in s)
+            foreach (var i in s)
             {
-                root = insert(i, root);
+                _root = Insert(i, _root);
             }
 
-
-            /* After insertion phase we traverse to sort the data */
-            traverse();
+            // После фазы сортировки выполняется обход для сортировки данных
+            Traverse();
         }
 
-        private Trie insert(string s, Trie node)
+        /// <summary>
+        /// Фаза вставки:
+        /// Вставка префикса строки в дерево и суффиксов в корзину
+        /// </summary>
+        /// <param name="s"> Строка </param>
+        /// <param name="node"> Дерево </param>
+        private static Trie? Insert(string s, Trie? node)
         {
             if (node == null)
             {
-                Trie n = new Trie();
-                char c = charAt(s);
-                n.insert(c, s);
+                var n = new Trie();
+                var c = CharAt(s);
+                n.Insert(c, s);
                 return n;
             }
 
-            else
-            {
-                node.insert(s[0], s);
-                return node;
-            }
-
+            node.Insert(s[0], s);
+            return node;
         }
 
+        /// <summary>
+        /// Фаза обхода:
+        /// Перемещение слева на право BurstTrie
+        /// Сортировка данных
+        /// </summary>
+        private static void Traverse() => _root?.Traverse(0);
 
-        /*
-         *              "Traversal phase"
-         *    Travel BurstTrie from left to right 
-         *    to sort data 
-         */
-        public void traverse()
+        public static void WritingToOriginalCollection(IList<string> array)
         {
-            root.traverse(0);
+            var index = 0;
+            _root?.WritingToOriginalCollection(0, array, ref index);
         }
 
-        //to print we use print function
-        public void print()
-        {
-            root.print(0);
-        }
+        public static char CharAt(string s) => s[0];
 
-        // utility function return the First character of string
-        public char charAt(string s)
+        /// <summary> Trie — древовидная структура данных </summary>
+        private class Trie
         {
-            return s[0];
-        }
-
-        //Trie node
-        class Trie
-        {
-            Buckets[] buckets;
-            List<int> c;
+            /// <summary> Корзина </summary>
+            private readonly Buckets[] _buckets;
+            private List<int> c;
 
             public Trie()
             {
                 c = new List<int>();
-                buckets = new Buckets[alphbet];
+                _buckets = new Buckets[Alphbet];
             }
 
-            public void insert(int x, string s)
+            public void Insert(int x, string s)
             {
                 if (!c.Contains(x))
                 {
-                    buckets[x] = new Buckets();
-                    buckets[x].insert(s.Substring(1));
+                    _buckets[x] = new Buckets();
+                    _buckets[x].Insert(s.Substring(1));
                     c.Add(x);
                 }
 
                 else
                 {
-                    buckets[x].insert(s.Substring(1));
+                    _buckets[x].Insert(s.Substring(1));
                 }
-
             }
 
 
-            public void traverse(int ch)
+            public void Traverse(int ch)
             {
-                //Sorting Prefixes
-                for (int i = 0; i < c.Count; i++)
+                // Сортировка префиксов
+                for (var i = 0; i < c.Count; i++)
                 {
-                    for (int j = 0; j < c.Count; j++)
+                    for (var j = 0; j < c.Count; j++)
                     {
                         if (c[i] < c[j])
                         {
-                            int temp = c[i];
-                            c[i] = c[j];
-                            c[j] = temp;
+                            (c[i], c[j]) = (c[j], c[i]);
                         }
-
                     }
-
                 }
 
-                for (int i = 0; i < c.Count; i++)//Calling buckets
+                // Вызов корзины
+                foreach (var item in c)
                 {
-                    buckets[c[i]].traverse(ch, c[i]);
+                    _buckets[item].Traverse(ch, item);
                 }
-
             }
-            public void print(int ch)
+
+            public void WritingToOriginalCollection(int ch, IList<string> array, ref int index)
             {
-                for (int i = 0; i < c.Count; i++)//Calling buckets
+                foreach (var item in c)
                 {
-                    buckets[c[i]].print(ch, c[i]);
+                    _buckets[item].WritingToOriginalCollection(ch, item, array, ref index);
                 }
-
             }
-
         }
 
-
-        /*
-         * Bucket to store the suffixes of string
-         * Array based impelementation of buckets
-         */
-        class Buckets
+        /// <summary>
+        /// Корзина для хранения суффиксов строки
+        /// Представления ведра на основе массива
+        /// </summary>
+        private class Buckets
         {
-            IList<string> buc;      //Bucket
-            int h;             //pointer help in inserting elements in bucket
-            int growthFactor;  //by which we increase the size of bucket
-            int initialSize;   //Starting size of bucket
-            int finalLimit;    //Time to burst
-            Trie root;
+            /// <summary> Коллекция корзины </summary>
+            private IList<string> _buc;
+            /// <summary> Указатель для вставки элементов в корзину </summary>
+            private int _h;
+            /// <summary> Значение для увеличения размера корзины </summary>
+            private readonly int _growthFactor;
+            /// <summary> Начальный размер корзины </summary>
+            private int _initialSize;
+            /// <summary> Лимит корзины </summary>
+            private readonly int _finalLimit;
+            /// <summary> Древовидная структура </summary>
+            private readonly Trie? _root;
 
             public Buckets()
             {
-                root = null;
-                finalLimit = threshold;
-                initialSize = bucket_start_size;
-                buc = new string[initialSize];
-                h = 0;
-                growthFactor = bucket_growth_factor;
+                _root = null;
+                _finalLimit = Threshold;
+                _initialSize = BucketStartSize;
+                _buc = new string[_initialSize];
+                _h = 0;
+                _growthFactor = BucketGrowthFactor;
             }
 
-            //Inerting elements in buckets
-            public void insert(string s)
+            /// <summary> Вставка элементов в ведро </summary>
+            /// <param name="s"> Строка </param>
+            public void Insert(string s)
             {
-                if (h < initialSize && h != finalLimit)//When bucket is not full
+                if (_h < _initialSize && _h != _finalLimit) // Когда корзина неполная
                 {
-                    buc[h] = s;
-                    h++;
+                    _buc[_h] = s;
+                    _h++;
                 }
 
-                if (h == initialSize && h != finalLimit)//When bucket is full
+                if (_h == _initialSize && _h != _finalLimit) // Когда корзина заполнена
                 {
-                    buc = increaseSize(buc);//Increasing the size of bucket
+                    _buc = IncreaseSize(_buc); // Увеличение размера корзины
                 }
 
-
-                if (h >= finalLimit)//When bucket reaches threshold
+                if (_h >= _finalLimit) // Корзина достигает порога
                 {
-                    /*
-                     *               "BURSTING PHASE"
-                     * Create a new trie node 
-                     * Inserting bucket elements in new trie node
-                     */
-
-                    for (int i = 0; i < h; i++)
+                    // Новая фаза:
+                    // 1. Создание нового узла древовидной структуры
+                    // 2. Вставка элементов корзины в новый узел структуры
+                    for (var i = 0; i < _h; i++)
                     {
-                        insert(buc[i]);//Calling the same method which we use before
+                        Insert(_buc[i]);
                     }
-
                 }
-
             }
 
-            /*
-             * Increase size of bucket by bucket_growth_factor
-             */
-            public IList<string> increaseSize(IList<string> b)
+            /// <summary> Увеличение размера ведра в соответствии с установленным коэффициентом </summary>
+            /// <param name="b"> Коллекция </param>
+            private IList<string> IncreaseSize(IList<string> b)
             {
-                initialSize *= growthFactor;
-                string[] a = new string[initialSize];
+                _initialSize *= _growthFactor;
+                var a = new string[_initialSize];
 
-                for (int i = 0; i < b.Count; i++)
+                for (var i = 0; i < b.Count; i++)
                 {
                     a[i] = b[i];
                 }
@@ -227,109 +204,96 @@ namespace algLab_4.Task3.Sorts
                 return a;
             }
 
-            public void traverse(int c, int ch)
+            public void Traverse(int c, int ch)
             {
-                if (root == null)
+                if (_root == null)
                 {
-                    for (int i = 0; i < h; i++)
+                    for (var i = 0; i < _h; i++)
                     {
-                        if (h > 1)//when the size of bucket is more than one
+                        if (_h > 1) // Размер ведра больше единицы
                         {
-
-                            /** Applying Multikey_Quick_Sort to sort buckets */
-                            MultikeyQuickSort sort = new MultikeyQuickSort();
-                            buc = sort.sort(buc, 0, h - 1, 0);
+                            // Применение MultikeyQuickSort для сортировки ведра
+                            var sort = new MultikeyQuickSort();
+                            _buc = sort.Sort(_buc, 0, _h - 1, 0);
                         }
-
                     }
-
                 }
-
                 else
                 {
-                    root.traverse(ch);
+                    _root.Traverse(ch);
                 }
-
             }
 
-            //To print the sorted data
-            public void print(int c, int ch)
+            /// <summary> Запись отсортированных данных в исходную коллекцию </summary>
+            /// <param name="array"> Исходная коллекция </param>
+            /// <param name="index"> Индекс добавляемого элемента </param>
+            public void WritingToOriginalCollection(int c, int ch, IList<string> array, ref int index)
             {
-                if (root == null)
+                if (_root == null)
                 {
-                    for (int i = 0; i < h; i++)
+                    for (var i = 0; i < _h; i++)
                     {
-                        Console.Write(Convert.ToChar(c));
-                        Console.WriteLine(Convert.ToChar(ch) + buc[i]);
+                        array[index] = $"{Convert.ToChar(c)}{Convert.ToChar(ch)}{_buc[i]}";
+                        index++;
                     }
-
                 }
-
                 else
                 {
-                    root.print(ch);
+                    _root.WritingToOriginalCollection(ch, array, ref index);
                 }
-
             }
 
         }
 
-        class MultikeyQuickSort
+        /// <summary>
+        /// Сортировка: MultikeyQuickSort
+        /// Деление коллекции на три части:
+        /// 1 - больше опорного элемента
+        /// 2 - меньше опорного элемента
+        /// 3 - равно опорному элементу
+        /// </summary>
+        private class MultikeyQuickSort
         {
-            /*
-             * Multikey_Quick_Sort divide array into three parts
-             * 
-             * 1-greater than pivot
-             * 2-less than pivot
-             * 3-equal to pivot
-             * 
-             */
-
-            public IList<string> sort(IList<string> a, int lo, int hi, int d)
+            public IList<string> Sort(IList<string> a, int left, int right, int d)
             {
-                if (hi <= lo) return a;
-                int lt = lo, gt = hi;
-                string s1 = a[lo];//pivot
-                int v = -1;
+                if (right <= left) return a;
+                int lt = left, gt = right;
+                var s1 = a[left]; // Опорный элемент (самый левый)
+                var v = -1;
 
                 if (d < s1.Length)
                 {
                     v = s1[d];
                 }
-                int i = lo + 1;
+                var i = left + 1;
 
                 while (i <= gt)
                 {
-                    string s = a[i];
-                    int t = -1;
+                    var s = a[i];
+                    var t = -1;
                     if (d < s1.Length)
                     {
                         t = s[d];
                     }
 
-                    if (t < v) interChange(a, lt++, i++);    //part 1
-                    else if (t > v) interChange(a, i, gt--); //part 2
-                    else i++;                                //part 3
+                    if (t < v) InterChange(a, lt++, i++);    // Часть 1
+                    else if (t > v) InterChange(a, i, gt--);   // Часть 2
+                    else i++;                                    // Часть 3
                 }
 
-
-                sort(a, lo, lt - 1, d);
+                Sort(a, left, lt - 1, d);
                 if (v >= 0)
-                    sort(a, lt, gt, d + 1);
-                sort(a, gt + 1, hi, d);
+                    Sort(a, lt, gt, d + 1);
+                Sort(a, gt + 1, right, d);
 
                 return a;
             }
 
-            private void interChange(IList<string> a, int i, int j)
-            {
-                string temp = a[i];
-                a[i] = a[j];
-                a[j] = temp;
-            }
-
+            /// <summary> Менять элементы коллекции местами </summary>
+            /// <param name="a"> Коллекция </param>
+            /// <param name="i"> Индекс первого элемента </param>
+            /// <param name="j"> Индекс второго элемента </param>
+            private void InterChange(IList<string> a, int i, int j) => (a[i], a[j]) = (a[j], a[i]);
         }
-
     }
 }
-

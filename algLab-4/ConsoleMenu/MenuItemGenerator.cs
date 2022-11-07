@@ -26,6 +26,18 @@
             };
         }
 
+        public static List<IMenuItem> GenerateTask3Menu()
+        {
+            return new List<IMenuItem>()
+            {
+                new MenuItem(MenuItemType.BubbleSortText, "Сортировка текста (Bubble Sort) и подсчёт повторений слов", true),
+                new MenuItem(MenuItemType.QuickSortText, "Сортировка текста (Quick Sort) и подсчёт повторений слов", false),
+                new MenuItem(MenuItemType.BurstSortText, "Сортировка текста (Burst Sort) и подсчёт повторений слов", false),
+                new MenuItem(MenuItemType.PrimaryMenu, "Вернуться на главное меню", false),
+                new MenuItem(MenuItemType.Exit, "Выход", false)
+            };
+        }
+
         public static List<IMenuItem> GenerateSettingsLoggerMenu()
         {
             return new List<IMenuItem>()

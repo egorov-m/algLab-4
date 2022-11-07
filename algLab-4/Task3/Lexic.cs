@@ -1,58 +1,42 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+﻿using System.Text;
 
 namespace algLab_4.Task3
 {
-    class Lexic
+    public static class Lexic
     {
-        public async static void GetWordsFromFile()
+        /// <summary> Получить слова из файла с текстом </summary>
+        /// <param name="path"> Путь до файла </param>
+        public static IList<string> GetWordsFromFile(string path = "words.txt")
         {
-            List<string> words = new List<string>();
+            using var streamReader = new StreamReader(path, Encoding.UTF8);
+            var separateWords = new List<string>();
+            string? src;
 
-            string path = "words.txt";
-            using (FileStream fstream = File.OpenRead(path))
+            while ((src = streamReader.ReadLine()) != null)
             {
-                byte[] buffer = new byte[fstream.Length];
-                await fstream.ReadAsync(buffer, 0, buffer.Length);
-                // декодируем байты в строку
-                string textFromFile = Encoding.Default.GetString(buffer);
-
-                var punctuation = textFromFile.Where(Char.IsPunctuation).Distinct().ToArray();
-                var separateWord = textFromFile.Split().Select(x => x.Trim(punctuation));
-
-                foreach (var i in separateWord)
-                {
-                    words.Add(i);
-                    if (i.Length == 0)
-                        words.Remove(i);
-                }
-
-                GetWords(words);
+                // Разделение текста на слова
+                var punctuation = src.Where(char.IsPunctuation).Distinct();
+                separateWords.AddRange(src.Split()
+                    .Select(x => x.Trim(punctuation.ToArray()))
+                    .Where(x => x != ""));
             }
 
+            return separateWords;
         }
 
-
-        public static void GetWords(List<string> words)
+        /// <summary> Получить слова из текста </summary>
+        /// <param name="text"> Текст </param>
+        public static IList<string> GetWordsFromText(this string text)
         {
-            foreach (var i in words)
-                Console.WriteLine(i);
+            var separateWords = new List<string>();
 
-            //Sorts.BubbleSort.BubbleSorting(words);
+            // Разделение текста на слова
+            var punctuation = text.Where(char.IsPunctuation).Distinct();
+            separateWords.AddRange(text.Split()
+                .Select(x => x.Trim(punctuation.ToArray()))
+                .Where(x => x != ""));
 
-            Sorts.QuickSort.QuickSorting(words, 0, words.Count - 1);
-
-            Sorts.BurstSortOutput.Output(words); //не работает
-
-
-
-            CountingRepeatWords.CountWords(words); //функция подсчета слов с ее выводом
-
+            return separateWords;
         }
     }
 }

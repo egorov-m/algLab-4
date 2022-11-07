@@ -58,7 +58,7 @@ namespace algLab_4.ConsoleMenu
                         
                         break;
                     case MenuItemType.Task3:
-                        Task3.Lexic.GetWordsFromFile();
+                        Task3MenuRendering();
                         break;
                     case MenuItemType.Exit:
                         break;
@@ -121,7 +121,7 @@ namespace algLab_4.ConsoleMenu
             }
         }
 
-        /// <summary> Рендеринг менб первого задания </summary>
+        /// <summary> Рендеринг меню первого задания </summary>
         public static void Task1MenuRendering()
         {
             Console.CursorVisible = false;
@@ -146,6 +146,45 @@ namespace algLab_4.ConsoleMenu
                     case MenuItemType.QuickSort:
                         Executor.ExecuteQuickSort();
                         Executor.ExecuteReturn(Task1MenuRendering, PrimaryMenuRendering);
+                        break;
+                    case MenuItemType.PrimaryMenu:
+                        PrimaryMenuRendering();
+                        break;
+                    case MenuItemType.Exit:
+                        break;
+                }
+            }
+        }
+
+        /// <summary> Рендеринг меню третьего задания </summary>
+        public static void Task3MenuRendering()
+        {
+            Console.CursorVisible = false;
+            var title = 
+@"  _______        _      ____  
+ |__   __|      | |    |___ \ 
+    | | __ _ ___| | __   __) |
+    | |/ _` / __| |/ /  |__ < 
+    | | (_| \__ \   <   ___) |
+    |_|\__,_|___/_|\_\ |____/ 
+";
+            var selectItem = MenuItemGenerator.GenerateTask3Menu().RunSelectingMenu(title);
+
+            if (selectItem != null)
+            {
+                switch (selectItem.Id)
+                {
+                    case MenuItemType.BubbleSortText:
+                        Executor.ExecuteBubbleSortText();
+                        Executor.ExecuteReturn(Task3MenuRendering, PrimaryMenuRendering);
+                        break;
+                    case MenuItemType.QuickSortText:
+                        Executor.ExecuteQuickSortText();
+                        Executor.ExecuteReturn(Task3MenuRendering, PrimaryMenuRendering);
+                        break;
+                    case MenuItemType.BurstSortText:
+                        Executor.ExecuteBurstSortText();
+                        Executor.ExecuteReturn(Task3MenuRendering, PrimaryMenuRendering);
                         break;
                     case MenuItemType.PrimaryMenu:
                         PrimaryMenuRendering();

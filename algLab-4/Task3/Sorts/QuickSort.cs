@@ -1,27 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace algLab_4.Task3.Sorts
+﻿namespace algLab_4.Task3.Sorts
 {
-     class QuickSort
+    public static class QuickSort
     {
-        static void Swap(IList<string> array, int i, int j)
+         /// <summary> Менять элементы местами </summary>
+         /// <param name="array"> Коллекция элементов </param>
+         /// <param name="i"> Индекс первого элемента </param>
+         /// <param name="j"> Индекс второго элемента </param>
+        private static void Swap(this IList<string> array, int i, int j)
         {
-            string temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
+            (array[i], array[j]) = (array[j], array[i]);
         }
 
-        public static void QuickSorting(IList<string> array, int start, int end)
+        /// <summary> Сортировать коллекцию строк алгоритмом "Быстрая сортировка" </summary>
+        /// <param name="array"> Коллекция для сортировки </param>
+        public static void QuickSorting(this IList<string> array) => array.QuickSorting(0, array.Count - 1);
+
+        /// <summary> Сортировать коллекцию строк алгоритмом "Быстрая сортировка" </summary>
+        /// <param name="array"> Коллекция для сортировки </param>
+        /// <param name="start"> Индекс начала подмассива </param>
+        /// <param name="end"> Индекс конца подмассива </param>
+        public static void QuickSorting(this IList<string> array, int start, int end)
         {
-            int i = start;
-            int k = end;
+            var i = start;
+            var k = end;
             if (end - start >= 1)
             {
-                string pivot = array[start];
+                var pivot = array[start];
                 while (k > i)
                 {
                     while (array[i].CompareTo(pivot) <= 0 && i <= end && k > i)
@@ -33,8 +37,8 @@ namespace algLab_4.Task3.Sorts
                 }
 
                 Swap(array, start, k);
-                QuickSorting(array, start, k - 1);
-                QuickSorting(array, k + 1, end);
+                array.QuickSorting(start, k - 1);
+                array.QuickSorting(k + 1, end);
             }
         }
     }

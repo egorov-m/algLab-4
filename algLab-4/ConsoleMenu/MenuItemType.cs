@@ -12,6 +12,9 @@
         InsertSort,
         QuickSort,
         SetNameLogger,
-        SetDelayLogger
+        SetDelayLogger,
+        BubbleSortText,
+        QuickSortText,
+        BurstSortText
     }
 }

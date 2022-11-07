@@ -36,5 +36,13 @@
             var src = System.Console.ReadLine();
             return src != null ? src.Split(' ') : Array.Empty<string>();
         }
+
+        /// <summary> Печать словаря количеств повторений слов в тексте </summary>
+        /// <param name="dic"> Словарь для печати </param>
+        public static void PrintDictionaryRepeatingWords(this Dictionary<string, int> dic)
+        {
+            foreach (var pair in dic)
+                Console.WriteLine($"{pair.Key} — {pair.Value}");
+        }
     }
 }
