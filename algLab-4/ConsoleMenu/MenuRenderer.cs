@@ -55,10 +55,10 @@ namespace algLab_4.ConsoleMenu
                         Task1MenuRendering();
                         break;
                     case MenuItemType.Task2:
-
+                        
                         break;
                     case MenuItemType.Task3:
-
+                        Task3.Lexic.GetWordsFromFile();
                         break;
                     case MenuItemType.Exit:
                         break;

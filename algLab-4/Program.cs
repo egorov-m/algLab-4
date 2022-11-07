@@ -9,16 +9,6 @@ namespace algLab_4
         {
             //MenuRenderer.PrimaryMenuRendering();
 
-            Lexic lexic = new Lexic();
-            lexic.GetWordsFromFile(); 
-
-
-
-            /* 
-             1. Сделать функцию CountingEnuqieWords (Нахождение уникальности слова)
-             2. Сделать csv графики для каждой сортировки
-             3. Доработать сортировки
-             */
         }
     }
 }
