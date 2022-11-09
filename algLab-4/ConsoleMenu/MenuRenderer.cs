@@ -182,10 +182,6 @@ namespace algLab_4.ConsoleMenu
                         Executor.ExecuteQuickSortText();
                         Executor.ExecuteReturn(Task3MenuRendering, PrimaryMenuRendering);
                         break;
-                    case MenuItemType.BurstSortText:
-                        Executor.ExecuteBurstSortText();
-                        Executor.ExecuteReturn(Task3MenuRendering, PrimaryMenuRendering);
-                        break;
                     case MenuItemType.PrimaryMenu:
                         PrimaryMenuRendering();
                         break;
