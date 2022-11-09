@@ -1,6 +1,7 @@
 ﻿using algLab_4.Task1;
 using algLab_4.Task3;
 using algLab_4.Task3.Sorts;
+using System.Diagnostics;
 
 namespace algLab_4.ConsoleMenu
 {
@@ -119,45 +120,107 @@ namespace algLab_4.ConsoleMenu
                         Console.WriteLine("9. 15000txt - eng");
 
                         var inputFile = Console.ReadKey();
-                        
+
 
                         switch (inputFile.KeyChar)
                         {
                             case '1':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "100.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch1 = new Stopwatch();
+                                    stopwatch1.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.BubbleSorting(), "100.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch1.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch1.Stop();
+                                    break;
+                                }
+
 
                             case '2':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "500.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch2 = new Stopwatch();
+                                    stopwatch2.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.BubbleSorting(), "500.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch2.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch2.Stop();
+                                    break;
+                                }
+
 
                             case '3':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "1000.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch3 = new Stopwatch();
+                                    stopwatch3.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.BubbleSorting(), "1000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch3.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch3.Stop();
+                                    break;
+                                }
+
 
                             case '4':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "3000.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch4 = new Stopwatch();
+                                    stopwatch4.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.BubbleSorting(), "3000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch4.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch4.Stop();
+                                    break;
+                                }
+
 
                             case '5':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "5000.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch5 = new Stopwatch();
+                                    stopwatch5.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.BubbleSorting(), "5000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch5.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch5.Stop();
+                                    break;
+                                }
+
 
                             case '6':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "3000en.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch6 = new Stopwatch();
+                                    stopwatch6.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.BubbleSorting(), "3000en.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch6.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch6.Stop();
+                                    break;
+                                }
+
 
                             case '7':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "5000en.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch7 = new Stopwatch();
+                                    stopwatch7.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.BubbleSorting(), "5000en.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch7.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch7.Stop();
+                                    break;
+                                }
+
 
                             case '8':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "10000en.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch8 = new Stopwatch();
+                                    stopwatch8.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.BubbleSorting(), "10000en.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch8.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch8.Stop();
+                                    break;
+                                }
+
 
                             case '9':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "15000en.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch9 = new Stopwatch();
+                                    stopwatch9.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.BubbleSorting(), "15000en.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch9.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch9.Stop();
+                                    break;
+                                }
                         }
 
 
@@ -165,7 +228,11 @@ namespace algLab_4.ConsoleMenu
 
                     break;
                 case '2':
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
                     ExecuteSortText(title, (x) => x.BubbleSorting());
+                    Console.WriteLine(Convert.ToString(stopwatch.Elapsed.TotalMilliseconds) + "ms");
+                    stopwatch.Stop();
                     break;
             }
 
@@ -206,44 +273,108 @@ namespace algLab_4.ConsoleMenu
                         Console.WriteLine("8. 10000txt - eng");
                         Console.WriteLine("9. 15000txt - eng");
 
+                        
                         var inputFile = Console.ReadKey();
                         switch (inputFile.KeyChar)
                         {
                             case '1':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "100.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch1 = new Stopwatch();
+                                    stopwatch1.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "100.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch1.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch1.Stop();
+                                    break;
+                                }
+                                
 
                             case '2':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "500.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch2 = new Stopwatch();
+                                    stopwatch2.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "500.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch2.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch2.Stop();
+                                    break;
+                                }
+                                
 
                             case '3':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "1000.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch3 = new Stopwatch();
+                                    stopwatch3.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "1000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch3.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch3.Stop();
+                                    break;
+                                }
+                               
 
                             case '4':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "3000.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch4 = new Stopwatch();
+                                    stopwatch4.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "3000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch4.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch4.Stop();
+                                    break;
+                                }
+                                
 
                             case '5':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "5000.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch5 = new Stopwatch();
+                                    stopwatch5.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "5000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch5.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch5.Stop();
+                                    break;
+                                }
+                               
 
                             case '6':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "3000en.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch6 = new Stopwatch();
+                                    stopwatch6.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "3000en.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch6.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch6.Stop();
+                                    break;
+                                }
+                                
 
                             case '7':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "5000en.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch7 = new Stopwatch();
+                                    stopwatch7.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "5000en.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch7.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch7.Stop();
+                                    break;
+                                }
+                               
 
                             case '8':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "10000en.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch8 = new Stopwatch();
+                                    stopwatch8.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "10000en.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch8.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch8.Stop();
+                                    break;
+                                }
+                               
 
                             case '9':
-                                ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "15000en.txt");
-                                break;
+                                {
+                                    Stopwatch stopwatch9 = new Stopwatch();
+                                    stopwatch9.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.QuickSorting(), "15000en.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch9.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch9.Stop();
+                                    break;
+                                }
+                                
                         }
 
                        
@@ -251,7 +382,11 @@ namespace algLab_4.ConsoleMenu
                     
                     break;
                 case '2':
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
                     ExecuteSortText(title, (x) => x.QuickSorting());
+                    Console.WriteLine(Convert.ToString(stopwatch.Elapsed.TotalMilliseconds) + "ms");
+                    stopwatch.Stop();
                     break;
             }
         }
@@ -289,6 +424,13 @@ namespace algLab_4.ConsoleMenu
             sortAlg(words);
             var dicRepWords = words.CountWords();
             dicRepWords.PrintDictionaryRepeatingWords();
+        }
+
+        public static void CreateOrSaveForCVS(double middletimes)
+        {
+            string writePath = @"TimeSorting.csv";
+            using StreamWriter sw = new StreamWriter(writePath, true);
+            sw.WriteLine(Convert.ToString(middletimes) + ";");
         }
     }
 }
