@@ -4,7 +4,7 @@
     {
         /// <summary> Сортировать коллекцию строк алгоритмом "Пузырьковая сортировка" </summary>
         /// <param name="arrForSorting"> Коллекция для сортировки </param>
-        public static void BubbleSorting(this IList<string> arrForSorting)
+        public static void BubbleSorting(this List<string> arrForSorting)
         {
             for (var i = 0; i < arrForSorting.Count; i++)
             {

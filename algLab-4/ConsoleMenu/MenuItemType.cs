@@ -15,5 +15,6 @@
         SetDelayLogger,
         BubbleSortText,
         QuickSortText,
+        RadixSortText
     }
 }

@@ -391,10 +391,171 @@ namespace algLab_4.ConsoleMenu
             }
         }
 
+
+        public static void ExecuteRadixSortText()
+        {
+            var title =
+@"
+  _____           _ _       _____            _     _______        _   
+ |  __ \         | (_)     / ____|          | |   |__   __|      | |  
+ | |__) |__ _  __| |___  _| (___   ___  _ __| |_     | | _____  _| |_ 
+ |  _  // _` |/ _` | \ \/ /\___ \ / _ \| '__| __|    | |/ _ \ \/ / __|
+ | | \ \ (_| | (_| | |>  < ____) | (_) | |  | |_     | |  __/>  <| |_ 
+ |_|  \_\__,_|\__,_|_/_/\_\_____/ \___/|_|   \__|    |_|\___/_/\_\\__|
+";
+
+            Console.WriteLine();
+            Console.WriteLine("1. Считать данные из файла");
+            Console.WriteLine("2. Ввести текст");
+
+            var input = Console.ReadKey();
+            switch (input.KeyChar)
+            {
+                case '1':
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("С какого файла считать данные?");
+                        Console.WriteLine();
+                        Console.WriteLine("1. radix(3) 500");
+                        Console.WriteLine("2. radix(3) 1000");
+                        Console.WriteLine("3. radix(3) 5000");
+                        Console.WriteLine("4. radix(3) 10000");
+                        Console.WriteLine("5. radix(3) 15000");
+                        Console.WriteLine("6. radix(10) 500");
+                        Console.WriteLine("7. radix(10) 1000");
+                        Console.WriteLine("8. radix(10) 5000");
+                        Console.WriteLine("9. radix(10) 10000");
+                        Console.WriteLine("0. radix(10) 15000");
+
+                        var inputFile = Console.ReadKey();
+                        switch (inputFile.KeyChar)
+                        {
+                            case '1':
+                                {
+                                    Stopwatch stopwatch1 = new Stopwatch();
+                                    stopwatch1.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(26, 3), "radix(3)500.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch1.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch1.Stop();
+                                    break;
+                                }
+
+
+                            case '2':
+                                {
+                                    Stopwatch stopwatch2 = new Stopwatch();
+                                    stopwatch2.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(26, 3), "radix(3)1000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch2.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch2.Stop();
+                                    break;
+                                }
+
+
+                            case '3':
+                                {
+                                    Stopwatch stopwatch3 = new Stopwatch();
+                                    stopwatch3.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(26, 3), "radix(3)5000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch3.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch3.Stop();
+                                    break;
+                                }
+
+
+                            case '4':
+                                {
+                                    Stopwatch stopwatch4 = new Stopwatch();
+                                    stopwatch4.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(26, 3), "radix(3)10000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch4.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch4.Stop();
+                                    break;
+                                }
+
+
+                            case '5':
+                                {
+                                    Stopwatch stopwatch5 = new Stopwatch();
+                                    stopwatch5.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(26, 3), "radix(3)15000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch5.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch5.Stop();
+                                    break;
+                                }
+
+
+                            case '6':
+                                {
+                                    Stopwatch stopwatch6 = new Stopwatch();
+                                    stopwatch6.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(32, 10), "radix(10)500.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch6.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch6.Stop();
+                                    break;
+                                }
+
+
+                            case '7':
+                                {
+                                    Stopwatch stopwatch7 = new Stopwatch();
+                                    stopwatch7.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(26, 10), "radix(10)1000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch7.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch7.Stop();
+                                    break;
+                                }
+
+
+                            case '8':
+                                {
+                                    Stopwatch stopwatch8 = new Stopwatch();
+                                    stopwatch8.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(26, 10), "radix(10)5000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch8.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch8.Stop();
+                                    break;
+                                }
+
+                            case '9':
+                                {
+                                    Stopwatch stopwatch8 = new Stopwatch();
+                                    stopwatch8.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(26, 10), "radix(10)10000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch8.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch8.Stop();
+                                    break;
+                                }
+                            case '0':
+                                {
+                                    Stopwatch stopwatch8 = new Stopwatch();
+                                    stopwatch8.Start();
+                                    ExecuteSortTextFromFile(title, (x) => x.RadixSorting(26, 10), "radix(10)15000.txt");
+                                    Console.WriteLine(Convert.ToString(stopwatch8.Elapsed.TotalMilliseconds) + "ms");
+                                    stopwatch8.Stop();
+                                    break;
+                                }
+                        }
+
+
+                    }
+
+                    break;
+                //case '2':
+                //    Stopwatch stopwatch = new Stopwatch();
+                //    stopwatch.Start();
+                //    ExecuteSortText(title, (x) => x.QuickSorting());
+                //    Console.WriteLine(Convert.ToString(stopwatch.Elapsed.TotalMilliseconds) + "ms");
+                //    stopwatch.Stop();
+                //    break;
+            }
+        }
+
+
         /// <summary> Выполнить сортировку пузырьком для текста (с подсчётом повторений слов) </summary>
         /// <param name="title"> Заголовок </param>
         /// <param name="sortAlg"> Алгоритм сортировки </param>
-        private static void ExecuteSortText(string title, Action<IList<string>> sortAlg)
+        private static void ExecuteSortText(string title, Action<List<string>> sortAlg)
         {
             ConsoleHelper.ClearScreen();
             Console.CursorVisible = true;
@@ -406,13 +567,13 @@ namespace algLab_4.ConsoleMenu
             {
                 var words = text.GetWordsFromText();
                 Console.WriteLine("\nРезультат (слово — число повторений):");
-                sortAlg(words); ;
+                sortAlg(words);
                 var dicRepWords = words.CountWords();
                 dicRepWords.PrintDictionaryRepeatingWords();
             }
         }
 
-        private static void ExecuteSortTextFromFile(string title, Action<IList<string>> sortAlg, string fileName)
+        private static void ExecuteSortTextFromFile(string title, Action<List<string>> sortAlg, string fileName)
         {
             ConsoleHelper.ClearScreen();
             Console.CursorVisible = true;

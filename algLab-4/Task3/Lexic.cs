@@ -6,7 +6,7 @@ namespace algLab_4.Task3
     {
         /// <summary> Получить слова из файла с текстом </summary>
         /// <param name="path"> Путь до файла </param>
-        public static IList<string> GetWordsFromFile(string path)
+        public static List<string> GetWordsFromFile(string path)
         {
             using var streamReader = new StreamReader(path, Encoding.UTF8);
             var separateWords = new List<string>();
@@ -26,7 +26,7 @@ namespace algLab_4.Task3
 
         /// <summary> Получить слова из текста </summary>
         /// <param name="text"> Текст </param>
-        public static IList<string> GetWordsFromText(this string text)
+        public static List<string> GetWordsFromText(this string text)
         {
             var separateWords = new List<string>();
 

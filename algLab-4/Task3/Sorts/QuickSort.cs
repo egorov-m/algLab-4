@@ -6,20 +6,20 @@
          /// <param name="array"> Коллекция элементов </param>
          /// <param name="i"> Индекс первого элемента </param>
          /// <param name="j"> Индекс второго элемента </param>
-        private static void Swap(this IList<string> array, int i, int j)
+        private static void Swap(this List<string> array, int i, int j)
         {
             (array[i], array[j]) = (array[j], array[i]);
         }
 
         /// <summary> Сортировать коллекцию строк алгоритмом "Быстрая сортировка" </summary>
         /// <param name="array"> Коллекция для сортировки </param>
-        public static void QuickSorting(this IList<string> array) => array.QuickSorting(0, array.Count - 1);
+        public static void QuickSorting(this List<string> array) => array.QuickSorting(0, array.Count - 1);
 
         /// <summary> Сортировать коллекцию строк алгоритмом "Быстрая сортировка" </summary>
         /// <param name="array"> Коллекция для сортировки </param>
         /// <param name="start"> Индекс начала подмассива </param>
         /// <param name="end"> Индекс конца подмассива </param>
-        public static void QuickSorting(this IList<string> array, int start, int end)
+        public static void QuickSorting(this List<string> array, int start, int end)
         {
             var i = start;
             var k = end;
