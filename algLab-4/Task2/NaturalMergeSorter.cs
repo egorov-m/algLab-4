@@ -2,8 +2,8 @@
 
 namespace algLab_4.Task2
 {
-    /// <summary> Сортировщик методом прямого слияния </summary>
-    public class DirectMergeSorter
+    /// <summary> Сортировщик методом естественного слияния </summary>
+    public class NaturalMergeSorter
     {
         /// <summary> Логгер для ведения журнала выполнения сортировки </summary>
         private static Logger.Logger SortLogger = Logger.Logger.GetLogger(0);
@@ -17,8 +17,8 @@ namespace algLab_4.Task2
         /// <summary> Ключ для сортировки (индекс колонки таблицы) </summary>
         public int SortKey { get; set; } = 4;
 
-        /// <summary> (Степень двойки) Количество элементов последовательности для слияния </summary>
-        private long _iterations;
+        /// <summary> Первый ли проход выполнять </summary>
+        private bool _isPassageFirst = true;
 
         /// <summary> Количество сегментов </summary>
         private long _segments;
@@ -34,31 +34,28 @@ namespace algLab_4.Task2
         /// <summary> Сравнение: сортировка по убыванию </summary>
         private Func<double, double, bool> _descending = (x, y) => x < y;
 
-        public DirectMergeSorter(string filePath)
+        public NaturalMergeSorter(string filePath)
         {
             InputFilePath = filePath;
-            _iterations = 1;
         }
 
-        public DirectMergeSorter(string filePath, int sortKey)
+        public NaturalMergeSorter(string filePath, int sortKey)
         {
             InputFilePath = filePath;
             SortKey = sortKey;
-            _iterations = 1;
         }
 
-        public DirectMergeSorter(int sortKey)
+        public NaturalMergeSorter(int sortKey)
         {
             SortKey = sortKey;
-            _iterations = 1;
         }
 
-        public DirectMergeSorter() => _iterations = 1;
+        public NaturalMergeSorter() {}
 
         /// <summary> Выполнить внешнюю сортировку по возрастанию методом прямого слияния </summary>
         public void Sort()
         {
-            SortLogger.Info("Начинается сортировка (Метод внешней сортировки: прямое слияние).");
+            SortLogger.Info("Начинается сортировка (Метод внешней сортировки: естественное слияние).");
             Sort(_ascending);
         }
 
@@ -73,7 +70,7 @@ namespace algLab_4.Task2
             while (true)
             {
                 SortLogger.Info($"Начинается выполнение прохода номер: {index++}.");
-                SplitToFiles();
+                SplitToFiles(order);
 
                 if (_segments == 1) break;
 
@@ -97,8 +94,8 @@ namespace algLab_4.Task2
             return count;
         }
 
-        /// <summary> Выполнять разбиение по двум файлам </summary>
-        private void SplitToFiles()
+        /// <summary> Выполнить внешнюю сортировку по убыванию методом прямого слияния </summary>
+        private void SplitToFiles(Func<double, double, bool> comparer)
         {
             SortLogger.Info("Выполняется разбиение:");
 
@@ -106,48 +103,76 @@ namespace algLab_4.Task2
 
             SortLogger.Info("|   Инициализация StreamReader — чтение из файла.");
 
-            using var sr = _iterations == 1 ? new StreamReader(InputFilePath) : new StreamReader(OutputFilePath);
+            using var sr = _isPassageFirst ? new StreamReader(InputFilePath) : new StreamReader(OutputFilePath);
 
             SortLogger.Info("|   Инициализация 2-x StreamWriter — запись в промежуточные файлы.");
 
             using var swA = new StreamWriter(_auxiliaryFilePathA);
             using var swB = new StreamWriter(_auxiliaryFilePathB);
 
-            var counter = 0L;
+            var isStart = false;
             var isFirstFile = true;
 
-            var length = GetCountLinesFile(_iterations == 1 ? InputFilePath : OutputFilePath);
+            var length = GetCountLinesFile(_isPassageFirst ? InputFilePath : OutputFilePath);
+            _isPassageFirst = false;
             var position = 0L;
+
+            var str = "";
+            var nextStr = "";
+
+            if (length == 1)
+            {
+                SortLogger.Info("В файле найдена только одна строка.");
+                SortLogger.Info($"|   |   Запись выполнена в файл {_auxiliaryFilePathA}.");
+
+                swA.WriteLine(sr.ReadLine());
+                return;
+            }
 
             while (position != length)
             {
-                if (counter == _iterations)
+                if (!isStart)
                 {
-                    isFirstFile = !isFirstFile;
-                    counter = 0;
-                    _segments++;
+                    str = sr.ReadLine();
+
+                    SortLogger.Info($"|   Считываем элемент: {str}.");
+
+                    position++;
+
+                    SortLogger.Info($"|   |   Выполняем запись в файл {_auxiliaryFilePathA}.");
+
+                    swA.WriteLine(str);
+                    isStart = true;
                 }
 
-                var str = sr.ReadLine();
+                nextStr = sr.ReadLine();
 
-                SortLogger.Info($"|   Прочитано: {str}");
+                SortLogger.Info($"|   Считываем элемент: {nextStr}.");
 
                 position++;
 
+                SortLogger.Info($"|   Выполняем сравнение данных из колонок с индексами: {SortKey}.");
+
+                if (comparer(double.Parse(nextStr.Split(";")[SortKey], CultureInfo.InvariantCulture), double.Parse(str.Split(";")[SortKey], CultureInfo.InvariantCulture)))
+                {
+                    isFirstFile = !isFirstFile;
+                    _segments++;
+                }
+
                 if (isFirstFile)
                 {
-                    swA.WriteLine(str);
+                    SortLogger.Info($"|   |   Выполняем запись в файл {_auxiliaryFilePathA} строки {nextStr}.");
 
-                    SortLogger.Info($"|   |   Запись выполнена в файл {_auxiliaryFilePathA}.");
+                    swA.WriteLine(nextStr);
                 }
                 else
                 {
-                    swB.WriteLine(str);
+                    SortLogger.Info($"|   |   Выполняем запись в файл {_auxiliaryFilePathB} строки {nextStr}.");
 
-                    SortLogger.Info($"|   |   Запись выполнена в файл {_auxiliaryFilePathB}.");
+                    swB.WriteLine(nextStr);
                 }
 
-                counter++;
+                str = nextStr;
             }
 
             SortLogger.Info("Разбиение завершено.");
@@ -167,9 +192,6 @@ namespace algLab_4.Task2
 
             using var sw = new StreamWriter(OutputFilePath);
 
-            var counterA = _iterations; 
-            var counterB = _iterations;
-
             var strA = "";
             var strB = "";
 
@@ -184,46 +206,29 @@ namespace algLab_4.Task2
             var positionA = 0L;
             var positionB = 0L;
 
-            while (!isEndA || !isEndB)
+            while (!isEndA || !isEndB || isPickedA || isPickedB)
             {
-                if (counterA == 0 && counterB == 0)
+                isEndA = positionA == lengthA;
+                isEndB = positionB == lengthB;
+
+                if (!isEndA && !isPickedA)
                 {
-                    counterA = _iterations;
-                    counterB = _iterations;
+                    strA = srA.ReadLine();
+
+                    SortLogger.Info($"|   Считан элемент {strA} из файла {_auxiliaryFilePathA}.");
+
+                    positionA++;
+                    isPickedA = true;
                 }
 
-                if (positionA != lengthA)
+                if (!isEndB && !isPickedB)
                 {
-                    if (counterA > 0 && !isPickedA)
-                    {
-                        strA = srA.ReadLine();
+                    strB = srB.ReadLine();
 
-                        SortLogger.Info($"|   Считан элемент {strA} из файла {_auxiliaryFilePathA}.");
+                    SortLogger.Info($"|   Считан элемент {strB} из файла {_auxiliaryFilePathB}.");
 
-                        positionA++;
-                        isPickedA = true;
-                    }
-                }
-                else
-                {
-                    isEndA = true;
-                }
-
-                if (positionB != lengthB)
-                {
-                    if (counterB > 0 && !isPickedB)
-                    {
-                        strB = srB.ReadLine();
-
-                        SortLogger.Info($"|   Считан элемент {strB} из файла {_auxiliaryFilePathB}.");
-
-                        positionB++;
-                        isPickedB = true;
-                    }
-                }
-                else
-                {
-                    isEndB = true;
+                    positionB++;
+                    isPickedB = true;
                 }
 
                 if (isPickedA)
@@ -232,12 +237,12 @@ namespace algLab_4.Task2
                     {
                         SortLogger.Info($"|   Выполняем сравнение данных из колонок с индексами: {SortKey}.");
 
-                        if (comparer(double.Parse(strA.Split(";")[SortKey], CultureInfo.InvariantCulture), double.Parse(strB.Split(";")[SortKey], CultureInfo.InvariantCulture)))
+                        if (comparer(double.Parse(strA.Split(";")[SortKey], CultureInfo.InvariantCulture),
+                                double.Parse(strB.Split(";")[SortKey], CultureInfo.InvariantCulture)))
                         {
                             SortLogger.Info($"|   Добавляем элемент {strA} из файла {_auxiliaryFilePathA} в основной файл {OutputFilePath}.");
 
                             sw.WriteLine(strA);
-                            counterA--;
                             isPickedA = false;
                         }
                         else
@@ -245,7 +250,6 @@ namespace algLab_4.Task2
                             SortLogger.Info($"|   Добавляем элемент {strB} из файла {_auxiliaryFilePathB} в основной файл {OutputFilePath}.");
 
                             sw.WriteLine(strB);
-                            counterB--;
                             isPickedB = false;
                         }
                     }
@@ -254,23 +258,17 @@ namespace algLab_4.Task2
                         SortLogger.Info($"|   Добавляем элемент {strA} из файла {_auxiliaryFilePathA} в основной файл {OutputFilePath}.");
 
                         sw.WriteLine(strA);
-                        counterA--;
                         isPickedA = false;
                     }
-                }
-                else if (isPickedB)
+                } else if (isPickedB)
                 {
                     SortLogger.Info($"|   Добавляем элемент {strB} из файла {_auxiliaryFilePathB} в основной файл {OutputFilePath}.");
 
                     sw.WriteLine(strB);
-                    counterB--;
                     isPickedB = false;
                 }
             }
 
-            _iterations *= 2;
-
-            SortLogger.Info($"|   Увеличиваем размер последовательности в 2 раза: {_iterations / 2} * 2 = {_iterations}.");
             SortLogger.Info("|   Слияние завершено.");
         }
     }

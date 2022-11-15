@@ -169,9 +169,7 @@ namespace algLab_4.ConsoleMenu
     | | (_| \__ \   <   / /_ 
     |_|\__,_|___/_|\_\ |____|
 
-В качестве примера будет использоваться небольшая таблица с информацией о странах:
-Формат: Название;Континент;Столица;Площадь;Численность населения
-Сортировка по возрастанию численности населения.
+В качестве примера для тестирования подготовлены небольшие таблицы с данными.
 ";
             var selectItem = MenuItemGenerator.GenerateTask2Menu().RunSelectingMenu(title);
 
@@ -184,7 +182,7 @@ namespace algLab_4.ConsoleMenu
                         Executor.ExecuteReturn(Task2MenuRendering, PrimaryMenuRendering);
                         break;
                     case MenuItemType.ExternalNaturalMergeSort:
-                        Console.WriteLine("Здесь будет запаск выполнения естественной сортировки.");
+                        Executor.ExecuteExternalNaturalMergeSort();
                         Executor.ExecuteReturn(Task2MenuRendering, PrimaryMenuRendering);
                         break;
                     case MenuItemType.ExternalMultipathMergeSort:
