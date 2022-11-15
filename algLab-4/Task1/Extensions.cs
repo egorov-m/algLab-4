@@ -5,20 +5,7 @@ namespace algLab_4.Task1
     public static class Extensions
     {
         /// <summary> Логгер для ведения журнала операций производимых во время сортировки </summary>
-        private static Logger.Logger SortLogger = Logger.Logger.GetLogger(
-            "sortLogger", 
-            Level.INFO, 
-            new List<IMessageHandler>() { new DelayHandler(1000, new List<IMessageHandler>() { new ConsoleHandler(), new FileHandler()})});
-
-        /// <summary> Установить логгер по имени</summary>
-        /// <param name="name"></param>
-        public static void SetLogger(string name)
-        {
-            SortLogger = Logger.Logger.GetLogger(name);
-        }
-
-        /// <summary> Получить текущий логгер </summary>
-        public static Logger.Logger GetCurrentLogger() => SortLogger;
+        private static Logger.Logger SortLogger = Logger.Logger.GetLogger(0);
 
         /// <summary> Сортировка вставками, ведётся журнал производимых операций </summary>
         /// <typeparam name="T"> Тип данных элементов коллекции </typeparam>

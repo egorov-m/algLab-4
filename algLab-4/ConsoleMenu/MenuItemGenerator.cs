@@ -26,6 +26,18 @@
             };
         }
 
+        public static List<IMenuItem> GenerateTask2Menu()
+        {
+            return new List<IMenuItem>()
+            {
+                new MenuItem(MenuItemType.ExternalDirectMergeSort, "Внешняя сортировка (Метод: прямое слияние)", true),
+                new MenuItem(MenuItemType.ExternalNaturalMergeSort, "Внешняя сортировка (Метод: естественное слияние)", false),
+                new MenuItem(MenuItemType.ExternalMultipathMergeSort, "Внешняя сортировка (Метод: многопутевое слияние)", false),
+                new MenuItem(MenuItemType.PrimaryMenu, "Вернуться на главное меню", false),
+                new MenuItem(MenuItemType.Exit, "Выход", false)
+            };
+        }
+
         public static List<IMenuItem> GenerateTask3Menu()
         {
             return new List<IMenuItem>()

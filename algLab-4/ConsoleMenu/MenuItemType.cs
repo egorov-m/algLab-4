@@ -15,6 +15,9 @@
         SetDelayLogger,
         BubbleSortText,
         QuickSortText,
-        RadixSortText
+        RadixSortText,
+        ExternalDirectMergeSort,
+        ExternalMultipathMergeSort,
+        ExternalNaturalMergeSort
     }
 }

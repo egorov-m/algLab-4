@@ -5,10 +5,13 @@
         /// <summary> Обработчики логирования </summary>
         private List<IMessageHandler> _handlers = new();
         /// <summary> Существующие логгеры </summary>
-        private static readonly Dictionary<string, Logger> _loggers = new();
+        private static readonly Dictionary<int, Logger> _loggers = new();
+
+        /// <summary> Идентификатор логгера </summary>
+        public int Id { get; private set; }
 
         /// <summary> Имя логгера </summary>
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         /// <summary> Уровень </summary>
         public Level Level { get; set; }
@@ -44,7 +47,7 @@
         {
             Name = name;
             Level = level;
-            _loggers.Add(name, this);
+            _loggers.Add(IdentifierSetter.GetId(), this);
         }
 
         /// <summary> Очистить логгер от обработчиков </summary>
@@ -55,18 +58,19 @@
         public void AddHandler(IMessageHandler handler) => _handlers.Add(handler);
 
         /// <summary> Получить логгер по имени </summary>
-        /// <param name="name"> Имя логгера </param>
-        public static Logger GetLogger(string name) => _loggers.ContainsKey(name) ? _loggers[name] : new Logger(name);
+        /// <param name="id"> Идентификатор логгера </param>
+        public static Logger GetLogger(int id) => _loggers.ContainsKey(id) ? _loggers[id] : new Logger("newLogger");
 
         /// <summary> Получить логгер и задать уровень </summary>
+        /// <param name="id"> Идентификатор логгера </param>
         /// <param name="name"> Имя логгера </param>
         /// <param name="level"> Уровень </param>
-        public static Logger GetLogger(string name, Level level)
+        public static Logger GetLogger(int id, string name, Level level)
         {
-            if (_loggers.ContainsKey(name))
+            if (_loggers.ContainsKey(id))
             {
-                _loggers[name].Level = level;
-                return _loggers[name];
+                _loggers[id].Level = level;
+                return _loggers[id];
             }
 
             return new Logger(name, level);
@@ -76,13 +80,13 @@
         /// <param name="name"> Имя логгера </param>
         /// <param name="level"> Уровень </param>
         /// <param name="handlers"> Обработчики </param>
-        public static Logger GetLogger(string name, Level level, IEnumerable<IMessageHandler> handlers)
+        public static Logger GetLogger(int id, string name, Level level, IEnumerable<IMessageHandler> handlers)
         {
-            if (_loggers.ContainsKey(name))
+            if (_loggers.ContainsKey(id))
             {
-                _loggers[name].Level = level;
-                _loggers[name]._handlers.AddRange(handlers);
-                return _loggers[name];
+                _loggers[id].Level = level;
+                _loggers[id]._handlers.AddRange(handlers);
+                return _loggers[id];
             }
 
             return new Logger(name, level, handlers);

@@ -55,7 +55,7 @@ namespace algLab_4.ConsoleMenu
                         Task1MenuRendering();
                         break;
                     case MenuItemType.Task2:
-                        
+                        Task2MenuRendering();
                         break;
                     case MenuItemType.Task3:
                         Task3MenuRendering();
@@ -95,7 +95,8 @@ namespace algLab_4.ConsoleMenu
                         }
                         else
                         {
-                            Task1.Extensions.SetLogger(name);
+                            var logger = Logger.Logger.GetLogger(0);
+                            logger.Name = name;
                         }
                         Executor.ExecuteReturn(SettingsLoggerRendering, PrimaryMenuRendering);
                         break;
@@ -106,9 +107,9 @@ namespace algLab_4.ConsoleMenu
                         if (!int.TryParse(str, out var delay)) Console.WriteLine("\nНужно ввести одно целое число миллисекунд, настройки логгера не изменились.");
                         else
                         {
-                            Task1.Extensions.GetCurrentLogger().ClearHandlers();
-                            Task1.Extensions.GetCurrentLogger()
-                                .AddHandler(new DelayHandler(delay, new List<IMessageHandler>() { new ConsoleHandler(), new FileHandler()}));
+                            var logger = Logger.Logger.GetLogger(0);
+                            logger.ClearHandlers();
+                            logger.AddHandler(new DelayHandler(delay, new List<IMessageHandler>() { new ConsoleHandler(), new FileHandler()}));
                         }
                         Executor.ExecuteReturn(SettingsLoggerRendering, PrimaryMenuRendering);
                         break;
@@ -146,6 +147,49 @@ namespace algLab_4.ConsoleMenu
                     case MenuItemType.QuickSort:
                         Executor.ExecuteQuickSort();
                         Executor.ExecuteReturn(Task1MenuRendering, PrimaryMenuRendering);
+                        break;
+                    case MenuItemType.PrimaryMenu:
+                        PrimaryMenuRendering();
+                        break;
+                    case MenuItemType.Exit:
+                        break;
+                }
+            }
+        }
+
+        /// <summary> Рендеринг меню второго задания </summary>
+        public static void Task2MenuRendering()
+        {
+            Console.CursorVisible = false;
+            var title = 
+@"  _______        _      ___  
+ |__   __|      | |    |__ \ 
+    | | __ _ ___| | __    ) |
+    | |/ _` / __| |/ /   / / 
+    | | (_| \__ \   <   / /_ 
+    |_|\__,_|___/_|\_\ |____|
+
+В качестве примера будет использоваться небольшая таблица с информацией о странах:
+Формат: Название;Континент;Столица;Площадь;Численность населения
+Сортировка по возрастанию численности населения.
+";
+            var selectItem = MenuItemGenerator.GenerateTask2Menu().RunSelectingMenu(title);
+
+            if (selectItem != null)
+            {
+                switch (selectItem.Id)
+                {
+                    case MenuItemType.ExternalDirectMergeSort:
+                        Executor.ExecuteExternalDirectMergeSort();
+                        Executor.ExecuteReturn(Task2MenuRendering, PrimaryMenuRendering);
+                        break;
+                    case MenuItemType.ExternalNaturalMergeSort:
+                        Console.WriteLine("Здесь будет запаск выполнения естественной сортировки.");
+                        Executor.ExecuteReturn(Task2MenuRendering, PrimaryMenuRendering);
+                        break;
+                    case MenuItemType.ExternalMultipathMergeSort:
+                        Console.WriteLine("Здесь будет запаск выполнения многопутевой сортировки.");
+                        Executor.ExecuteReturn(Task2MenuRendering, PrimaryMenuRendering);
                         break;
                     case MenuItemType.PrimaryMenu:
                         PrimaryMenuRendering();

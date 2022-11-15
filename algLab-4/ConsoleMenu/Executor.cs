@@ -2,6 +2,7 @@
 using algLab_4.Task3;
 using algLab_4.Task3.Sorts;
 using System.Diagnostics;
+using algLab_4.Task2;
 
 namespace algLab_4.ConsoleMenu
 {
@@ -541,6 +542,9 @@ namespace algLab_4.ConsoleMenu
                     }
 
                     break;
+                case '2':
+                    ExecuteSortText(title, (x) => x.BubbleSorting());
+                    break;
                 //case '2':
                 //    Stopwatch stopwatch = new Stopwatch();
                 //    stopwatch.Start();
@@ -592,6 +596,24 @@ namespace algLab_4.ConsoleMenu
             string writePath = @"TimeSorting.csv";
             using StreamWriter sw = new StreamWriter(writePath, true);
             sw.WriteLine(Convert.ToString(middletimes) + ";");
+        }
+
+        public static void ExecuteExternalDirectMergeSort()
+        {
+            ConsoleHelper.ClearScreen();
+            Console.CursorVisible = true;
+            Console.WriteLine(
+@"  ______      _                        _   _____  _               _     __  __                        _____            _   
+ |  ____|    | |                      | | |  __ \(_)             | |   |  \/  |                      / ____|          | |  
+ | |__  __  _| |_ ___ _ __ _ __   __ _| | | |  | |_ _ __ ___  ___| |_  | \  / | ___ _ __ __ _  ___  | (___   ___  _ __| |_ 
+ |  __| \ \/ / __/ _ \ '__| '_ \ / _` | | | |  | | | '__/ _ \/ __| __| | |\/| |/ _ \ '__/ _` |/ _ \  \___ \ / _ \| '__| __|
+ | |____ >  <| ||  __/ |  | | | | (_| | | | |__| | | | |  __/ (__| |_  | |  | |  __/ | | (_| |  __/  ____) | (_) | |  | |_ 
+ |______/_/\_\\__\___|_|  |_| |_|\__,_|_| |_____/|_|_|  \___|\___|\__| |_|  |_|\___|_|  \__, |\___| |_____/ \___/|_|   \__|
+                                                                                         __/ |                             
+                                                                                        |___/                              
+");
+            var sorter = new DirectMergeSorter();
+            sorter.Sort();
         }
     }
 }
