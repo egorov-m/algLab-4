@@ -1,51 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace algLab_4.Task2
+﻿namespace algLab_4.Task2
 {
     public class HeadIndexPair
     {
-        public string head;
-        public int i;
+        public string Head { get; set; }
+        public int I { get; set; }
 
         public HeadIndexPair(string head, int i)
         {
-            this.head = head;
-            this.i = i;
+            this.Head = head;
+            this.I = i;
         }
     }
     class MultiwayMergeSorter
     {
-        string filename_in;
-        string filename_out;
-        int M;
-        int B;
-        int C;
-        string sep;
-        string tmpFilePrefix = "tmpfile";
-        int numChunk = 0;
+        /// <summary> Логгер для ведения журнала выполнения сортировки </summary>
+        private static Logger.Logger SortLogger = Logger.Logger.GetLogger(0);
+
+        public string FilenameIn { get; set; }
+        public string FilenameOut { get; set; }
+        private int _m;
+        private int _b;
+        private int _c;
+        private string _sep;
+        private string _tmpFilePrefix = "tmpfile";
+        private int _numChunk;
 
 
         public MultiwayMergeSorter(string filename_in, string filename_out, int m, int b, int c, string sep)
         {
-            this.filename_in = filename_in;
-            this.filename_out = filename_out;
-            M = m;
-            B = b;
-            C = c;
-            this.sep = sep;
+            FilenameIn = filename_in;
+            FilenameOut = filename_out;
+            _m = m;
+            _b = b;
+            _c = c;
+            _sep = sep;
         }
 
-        public void doSortingMerge()
+        public void DoSortingMerge()
         {
             Console.WriteLine("Phase 1 is started");
-            using (StreamReader sr = new StreamReader(filename_in))
+            using (StreamReader sr = new StreamReader(FilenameIn))
             {
                 int cnt = 0;
-                string[] chunk = new string[M];
+                string[] chunk = new string[_m];
 
                 string line;
 
@@ -53,18 +50,18 @@ namespace algLab_4.Task2
                 {
                     chunk[cnt] = line;
                     cnt++;
-                    if (cnt % M == 0)
+                    if (cnt % _m == 0)
                     {
-                        sortAndSaveChunk(chunk, tmpFilePrefix + numChunk);
+                        SortAndSaveChunk(chunk, _tmpFilePrefix + _numChunk);
                         cnt = 0;
-                        numChunk++;
+                        _numChunk++;
                     }
                 }
 
                 if (cnt != 0)
                 {
-                    sortAndSaveChunk(chunk, tmpFilePrefix + numChunk);
-                    numChunk++;
+                    SortAndSaveChunk(chunk, _tmpFilePrefix + _numChunk);
+                    _numChunk++;
                 }
 
                 Console.WriteLine("Phase 1 Time elapsed (sec) = ");
@@ -75,7 +72,7 @@ namespace algLab_4.Task2
                 //нам не нужно управлять буфером напрямую
                 //Управление буфером осуществляется StreamReader
 
-                StreamReader[] readers = new StreamReader[numChunk];
+                StreamReader[] readers = new StreamReader[_numChunk];
 
                 /*
                  Мы будем использовать приоритетную очередь, чтобы эффективно реализовать конкуренцию между головками отсортированных
@@ -85,13 +82,13 @@ namespace algLab_4.Task2
                 нам, какой это подсписок
                  */
 
-                var heads = new PriorityQueue<HeadIndexPair, HeadIndexPair>(Comparer<HeadIndexPair>.Create((a, b) => compare(a.head, b.head)));
+                var heads = new PriorityQueue<HeadIndexPair, HeadIndexPair>(Comparer<HeadIndexPair>.Create((a, b) => compare(a.Head, b.Head)));
 
 
 
-                for (int i = 0; i < numChunk; i++)
+                for (int i = 0; i < _numChunk; i++)
                 {
-                    using (StreamReader strRead = new StreamReader(tmpFilePrefix + i))
+                    using (StreamReader strRead = new StreamReader(_tmpFilePrefix + i))
                     {
                         readers[i] = strRead;
                         strRead.Close();
@@ -99,9 +96,9 @@ namespace algLab_4.Task2
                 }
 
 
-                using (StreamWriter streamOut = new StreamWriter(filename_out))
+                using (StreamWriter streamOut = new StreamWriter(FilenameOut))
                 {
-                    for (int i = 0; i < numChunk; i++)
+                    for (int i = 0; i < _numChunk; i++)
                         heads.Enqueue(new HeadIndexPair(readers[i].ReadLine(), i), new HeadIndexPair(readers[i].ReadLine(), i));
 
                     while (true)
@@ -110,16 +107,16 @@ namespace algLab_4.Task2
 
                         if (null == minh) break;
 
-                        streamOut.WriteLine(minh.head);
+                        streamOut.WriteLine(minh.Head);
 
-                        if ((line = readers[minh.i].ReadLine()) != null)
+                        if ((line = readers[minh.I].ReadLine()) != null)
                         {
-                            heads.Enqueue(new HeadIndexPair(line, minh.i), new HeadIndexPair(line, minh.i));
+                            heads.Enqueue(new HeadIndexPair(line, minh.I), new HeadIndexPair(line, minh.I));
                         }
                     }
 
 
-                    for (int i = 0; i < numChunk; i++)
+                    for (int i = 0; i < _numChunk; i++)
                     {
                         readers[i].Close();
                     }
@@ -129,7 +126,7 @@ namespace algLab_4.Task2
                 Console.WriteLine("Sort Complete");
             }
         }
-        public void sortAndSaveChunk(string[] chunk, string filename)
+        public void SortAndSaveChunk(string[] chunk, string filename)
         {
             Console.WriteLine("sorting and saving" + filename);
             Array.Sort(chunk, (a, b) => compare(a, b));
@@ -149,10 +146,10 @@ namespace algLab_4.Task2
 
         }
 
-        public string extractCol(string line)
+        public string ExtractCol(string line)
         {
-            string[] columns = line.Split(sep);
-            return columns[C];
+            string[] columns = line.Split(_sep);
+            return columns[_c];
         }
 
 
@@ -164,12 +161,12 @@ namespace algLab_4.Task2
                 return 1;
             if (b == null)
                 return -1;
-            return extractCol(a).CompareTo(extractCol(b));
+            return ExtractCol(a).CompareTo(ExtractCol(b));
         }
 
-        public static void calledMultiWay()
+        public static void CalledMultiWay()
         {
-            MultiwayMergeSorter mySort = new MultiwayMergeSorter(
+            var mySort = new MultiwayMergeSorter(
                 "taxpayers_3M.txt",
                 "taxpayers_3M_sorted.txt",
                 3000,
@@ -177,7 +174,7 @@ namespace algLab_4.Task2
                 0,
                 "\t");
 
-            mySort.doSortingMerge();
+            mySort.DoSortingMerge();
         }
     }
 }

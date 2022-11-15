@@ -186,7 +186,7 @@ namespace algLab_4.ConsoleMenu
                         Executor.ExecuteReturn(Task2MenuRendering, PrimaryMenuRendering);
                         break;
                     case MenuItemType.ExternalMultipathMergeSort:
-                        Console.WriteLine("Здесь будет запаск выполнения многопутевой сортировки.");
+                        Executor.ExecuteExternalMultiwayMergeSort();
                         Executor.ExecuteReturn(Task2MenuRendering, PrimaryMenuRendering);
                         break;
                     case MenuItemType.PrimaryMenu:

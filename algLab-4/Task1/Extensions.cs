@@ -86,11 +86,11 @@ namespace algLab_4.Task1
 
             while (true)
             {
-                SortLogger.Info($"|   Левый указатель i: {i}.");
+                SortLogger.Info($"|   Левый указатель I: {i}.");
                 do
                 {
                     i++;
-                    SortLogger.Info($"|   |   Левый указатель сдвигаем вправо, i++: {i}.");
+                    SortLogger.Info($"|   |   Левый указатель сдвигаем вправо, I++: {i}.");
                 } while (pivot.CompareTo(collection[i]) > 0); // > заменить на < для сортировки по убыванию
 
                 SortLogger.Info($"|   Левый указатель достиг цели (pivot = {pivot} <= array[{i}] = {collection[i]} - выполняется).");
