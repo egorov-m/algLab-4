@@ -656,7 +656,7 @@ namespace algLab_4.ConsoleMenu
             }
         }
 
-        public static void ExecuteExternalMultiwayMergeSort()
+        public static async Task ExecuteExternalMultiwayMergeSort()
         {
             ConsoleHelper.ClearScreen();
             Console.CursorVisible = true;
@@ -670,19 +670,18 @@ namespace algLab_4.ConsoleMenu
                                                                                __/ |                   __/ |                             
                                                                               |___/                   |___/                              
 
-В качестве примера будет использоваться небольшая таблица с информацией о людях:
-
-Сортировка по возрастанию.
+В качестве примера будет сгенерирован файл, который занесет в себя данных из двух файлов (popular-first, popular-last). После чего будет
+произведена сортировка и разбивка изначального файла на маленькие. 
+Название (0);first name (1);SIN (2);last name (3); salary
+Сортировка по возрастанию одного из столбцов.
 
 ");
             Console.WriteLine("Введите индекс колонки для сортировки: ");
+            Console.WriteLine("Генерируем изначальный файл... ");
+            //await Task2.GenerateData_forMultiway_.MakeFile();
+            Console.WriteLine("проводим сортировку данных...");
+            Task2.doSortingMerge.CalledMultiWay();
 
-            var key = GetSortKey();
-            if (key != null)
-            {
-                //var sorter = new NaturalMergeSorter(key ?? 4);
-                //sorter.Sort();
-            }
         }
 
 

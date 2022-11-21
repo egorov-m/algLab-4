@@ -1,144 +1,121 @@
 ﻿namespace algLab_4.Task2
 {
+
     public class HeadIndexPair
     {
-        public string Head { get; set; }
-        public int I { get; set; }
+        public string head;
+        public int i;
 
         public HeadIndexPair(string head, int i)
         {
-            this.Head = head;
-            this.I = i;
+            this.head = head;
+            this.i = i;
         }
     }
-    class MultiwayMergeSorter
+
+    class doSortingMerge
     {
-        /// <summary> Логгер для ведения журнала выполнения сортировки </summary>
         private static Logger.Logger SortLogger = Logger.Logger.GetLogger(0);
 
-        public string FilenameIn { get; set; }
-        public string FilenameOut { get; set; }
-        private int _m;
-        private int _b;
-        private int _c;
-        private string _sep;
-        private string _tmpFilePrefix = "tmpfile";
-        private int _numChunk;
+        string filename_in;
+        string filename_out;
+        int M; //размер фрагмента для сортировки по кол-ву строк, а также размер отсортированного списка
+        int B; //размер буфера в символах (1 символ = 2 байта), если В == 8192 символа, то это 16К байт
+        int C; //сортировать столбец
+        string sep; //разделитель столбцов
+        string tmpFilePrefix = "tmpfile";
+        int numChunk = 0;
 
 
-        public MultiwayMergeSorter(string filename_in, string filename_out, int m, int b, int c, string sep)
+        public doSortingMerge(string filename_in, string filename_out, int m, int b, int c, string sep)
         {
-            FilenameIn = filename_in;
-            FilenameOut = filename_out;
-            _m = m;
-            _b = b;
-            _c = c;
-            _sep = sep;
+            this.filename_in = filename_in;
+            this.filename_out = filename_out;
+            M = m;
+            B = b;
+            C = c;
+            this.sep = sep;
         }
 
-        public void DoSortingMerge()
+        public void doSort()
         {
-            Console.WriteLine("Phase 1 is started");
-            using (StreamReader sr = new StreamReader(FilenameIn))
+            SortLogger.Info("Первая стадия:");
+            using (StreamReader sr = new StreamReader(filename_in))
             {
                 int cnt = 0;
-                string[] chunk = new string[_m];
+                string[] chunk = new string[M];
 
                 string line;
-
+                SortLogger.Info("Рассфасовываем по файликам txt!");
                 while ((line = sr.ReadLine()) != null)
                 {
                     chunk[cnt] = line;
                     cnt++;
-                    if (cnt % _m == 0)
+                    SortLogger.Info($"{cnt} файл - пошел!");
+                    if (cnt % M == 0)
                     {
-                        SortAndSaveChunk(chunk, _tmpFilePrefix + _numChunk);
+                        sortAndSaveChunk(chunk, tmpFilePrefix + numChunk);
                         cnt = 0;
-                        _numChunk++;
+                        numChunk++;
                     }
                 }
 
                 if (cnt != 0)
                 {
-                    SortAndSaveChunk(chunk, _tmpFilePrefix + _numChunk);
-                    _numChunk++;
+                    sortAndSaveChunk(chunk, tmpFilePrefix + numChunk);
+                    numChunk++;
                 }
 
-                Console.WriteLine("Phase 1 Time elapsed (sec) = ");
+                StreamReader[] readers = new StreamReader[numChunk];
 
-                Console.WriteLine("Phase 2 started");
-
-                //у нас есть отсортированные подсписки numChunks, которые нам нужно объединить
-                //нам не нужно управлять буфером напрямую
-                //Управление буфером осуществляется StreamReader
-
-                StreamReader[] readers = new StreamReader[_numChunk];
-
-                /*
-                 Мы будем использовать приоритетную очередь, чтобы эффективно реализовать конкуренцию между головками отсортированных
-                подсписков (чанков). Мы создаем пару голова - индекс, которая будет использоваться в качестве типа для элементов PriorityQueue 
-                Индекс - номер отсортированного подсписка, которому принадлежит голова. Зачем нам индекс? Когда голова "выйгрывает" (наименьшая среди голов)
-                она мигрирует в выходной буфер. Таким образом, нам нужно вставить новый заголовок из соответствующего подсписка (чанка), а индекс сообщает 
-                нам, какой это подсписок
-                 */
-
-                var heads = new PriorityQueue<HeadIndexPair, HeadIndexPair>(Comparer<HeadIndexPair>.Create((a, b) => compare(a.Head, b.Head)));
+                var heads = new PriorityQueue<HeadIndexPair, HeadIndexPair>(Comparer<HeadIndexPair>.Create((a, b) => compare(a.head, b.head)));
 
 
 
-                for (int i = 0; i < _numChunk; i++)
+                for (int i = 0; i < numChunk; i++)
                 {
-                    using (StreamReader strRead = new StreamReader(_tmpFilePrefix + i))
-                    {
-                        readers[i] = strRead;
-                        strRead.Close();
-                    }
+                    StreamReader strRead = new StreamReader(tmpFilePrefix + i);
+                    readers[i] = strRead;     
                 }
 
 
-                using (StreamWriter streamOut = new StreamWriter(FilenameOut))
+                using (StreamWriter streamOut = new StreamWriter(filename_out))
                 {
-                    for (int i = 0; i < _numChunk; i++)
+                    for (int i = 0; i < numChunk; i++)
                         heads.Enqueue(new HeadIndexPair(readers[i].ReadLine(), i), new HeadIndexPair(readers[i].ReadLine(), i));
 
                     while (true)
                     {
-                        HeadIndexPair minh = heads.Dequeue();
+                        HeadIndexPair? minh = heads.Count > 0 ? heads.Dequeue() : null;
 
                         if (null == minh) break;
 
-                        streamOut.WriteLine(minh.Head);
+                        streamOut.WriteLine(minh.head);
 
-                        if ((line = readers[minh.I].ReadLine()) != null)
-                        {
-                            heads.Enqueue(new HeadIndexPair(line, minh.I), new HeadIndexPair(line, minh.I));
-                        }
+                        if ((line = readers[minh.i].ReadLine()) != null)
+                            heads.Enqueue(new HeadIndexPair(line, minh.i), new HeadIndexPair(line, minh.i));
+                        
                     }
 
 
-                    for (int i = 0; i < _numChunk; i++)
-                    {
+                    for (int i = 0; i < numChunk; i++)
                         readers[i].Close();
-                    }
                 }
 
                 sr.Close();
-                Console.WriteLine("Sort Complete");
+                SortLogger.Info("Сортировка закончена!");
             }
         }
-        public void SortAndSaveChunk(string[] chunk, string filename)
+
+        public void sortAndSaveChunk(string[] chunk, string filename)
         {
-            Console.WriteLine("sorting and saving" + filename);
             Array.Sort(chunk, (a, b) => compare(a, b));
             using (StreamWriter sw = new StreamWriter(filename))
             {
                 for (int i = 0; i < chunk.Length; i++)
                 {
                     if (chunk[i] != null)
-                    {
                         sw.WriteLine(chunk[i]);
-
-                    }
                 }
 
                 sw.Close();
@@ -146,10 +123,10 @@
 
         }
 
-        public string ExtractCol(string line)
+        public string extractCol(string line)
         {
-            string[] columns = line.Split(_sep);
-            return columns[_c];
+            string[] columns = line.Split(sep);
+            return columns[C];
         }
 
 
@@ -161,12 +138,12 @@
                 return 1;
             if (b == null)
                 return -1;
-            return ExtractCol(a).CompareTo(ExtractCol(b));
+            return extractCol(a).CompareTo(extractCol(b));
         }
 
         public static void CalledMultiWay()
         {
-            var mySort = new MultiwayMergeSorter(
+            var mySort = new doSortingMerge(
                 "taxpayers_3M.txt",
                 "taxpayers_3M_sorted.txt",
                 3000,
@@ -174,7 +151,7 @@
                 0,
                 "\t");
 
-            mySort.DoSortingMerge();
+            mySort.doSort();
         }
     }
 }
