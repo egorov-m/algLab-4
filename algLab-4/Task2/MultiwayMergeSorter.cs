@@ -43,17 +43,19 @@
             using (StreamReader sr = new StreamReader(filename_in))
             {
                 int cnt = 0;
+
+                SortLogger.Info("|Заносим данные с txt в массив chunk, сортируем...");
                 string[] chunk = new string[M];
 
                 string line;
-                SortLogger.Info("Рассфасовываем по файликам txt!");
                 while ((line = sr.ReadLine()) != null)
                 {
+                    SortLogger.Info($"  |Просмотр {cnt} строки");
                     chunk[cnt] = line;
                     cnt++;
-                    SortLogger.Info($"{cnt} файл - пошел!");
                     if (cnt % M == 0)
                     {
+                        SortLogger.Info($"      |Просмотр {cnt} строки. Достигло значения M - идет сортировка предыдущих строк");
                         sortAndSaveChunk(chunk, tmpFilePrefix + numChunk);
                         cnt = 0;
                         numChunk++;
@@ -71,39 +73,51 @@
                 var heads = new PriorityQueue<HeadIndexPair, HeadIndexPair>(Comparer<HeadIndexPair>.Create((a, b) => compare(a.head, b.head)));
 
 
-
+                SortLogger.Info("|Разбиваем chunks на tmpFiles, исходя из размера M");
                 for (int i = 0; i < numChunk; i++)
                 {
+                    SortLogger.Info($"   |tmp file {i}");
                     StreamReader strRead = new StreamReader(tmpFilePrefix + i);
                     readers[i] = strRead;     
                 }
 
 
+                SortLogger.Info("|Слияние tmp file-ов в filename_out...");
                 using (StreamWriter streamOut = new StreamWriter(filename_out))
                 {
+                    SortLogger.Info("   |добавление подмассивов в heads...");
                     for (int i = 0; i < numChunk; i++)
+                    {
+                        SortLogger.Info($"        |{i} chunk");
                         heads.Enqueue(new HeadIndexPair(readers[i].ReadLine(), i), new HeadIndexPair(readers[i].ReadLine(), i));
+                    }
+                        
 
+                    SortLogger.Info("   |Нахождение минимальной головы и внесение в отсортированный в список");
                     while (true)
                     {
                         HeadIndexPair? minh = heads.Count > 0 ? heads.Dequeue() : null;
-
                         if (null == minh) break;
 
                         streamOut.WriteLine(minh.head);
+
 
                         if ((line = readers[minh.i].ReadLine()) != null)
                             heads.Enqueue(new HeadIndexPair(line, minh.i), new HeadIndexPair(line, minh.i));
                         
                     }
 
-
+                    SortLogger.Info("   |Закрытие всех потоков...");
                     for (int i = 0; i < numChunk; i++)
+                    {
+                        SortLogger.Info($"       |{i} поток") ;
                         readers[i].Close();
+                    }
+                        
                 }
 
                 sr.Close();
-                SortLogger.Info("Сортировка закончена!");
+                SortLogger.Info("|Сортировка закончена!");
             }
         }
 
@@ -144,9 +158,13 @@
         public static void CalledMultiWay()
         {
             var mySort = new doSortingMerge(
-                "taxpayers_3M.txt",
-                "taxpayers_3M_sorted.txt",
-                3000,
+                //"taxpayers_3M.txt",
+                //"taxpayers_3M_sorted.txt",
+                //300000,
+
+                "taxpayers_70.txt",
+                "taxpayers_70_sorted.txt",
+                10,
                 8192,
                 0,
                 "\t");

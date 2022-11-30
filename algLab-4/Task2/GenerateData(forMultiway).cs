@@ -10,17 +10,18 @@ namespace algLab_4.Task2
     {
         public static async Task MakeFile()
         {
-            int N = 3000000; //number of rows to generate
+            int N = 70; //number of rows to generate
 
             List<string> firstnames = new List<string>();
             List<string> lastnames = new List<string>();
 
 
 
-            string file1 = "popular-first.txt";
-            string file2 = "popular-last.txt";
+            string file1 = "popular-first(small).txt";
+            string file2 = "popular-last(small).txt";
 
-            string outFile = "taxpayers_3M.txt";
+            //string outFile = "taxpayers_3M.txt";
+            string outFile = "taxpayers_70.txt";
 
             firstnames = File.ReadAllLines(file1).ToList();
             lastnames = File.ReadAllLines(file2).ToList();
