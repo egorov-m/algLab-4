@@ -129,6 +129,8 @@ namespace algLab_4.Task2
                 return;
             }
 
+            SortLogger.Info("|---Начинаем собирать серию.");
+
             while (position != length)
             {
                 if (!isStart)
@@ -155,7 +157,11 @@ namespace algLab_4.Task2
 
                 if (comparer(double.Parse(nextStr.Split(";")[SortKey], CultureInfo.InvariantCulture), double.Parse(str.Split(";")[SortKey], CultureInfo.InvariantCulture)))
                 {
+                    var tmp = isFirstFile;
                     isFirstFile = !isFirstFile;
+                    
+                    if (tmp != isFirstFile) SortLogger.Info("|---Начинается новая серия");
+
                     _segments++;
                 }
 
